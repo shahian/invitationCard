@@ -23,9 +23,9 @@ public class Main {
         try {
             // List of names
             //List<String> names = Arrays.asList("حمیدرضا", "کامبیز", "حسینی", "بختیاری");
-            List<String> names = readNamesFromFile("F:\\testgeneratePdf\\image_names_1.txt");
+            List<String> names = readNamesFromFile("G:\\Rey_commision_bodybuilding\\generate_card_invitation\\14030929\\image_names2.txt");
 
-            Font customFont = loadCustomFont("F:\\testgeneratePdf\\font\\iran_sans.ttf");
+            Font customFont = loadCustomFont("G:\\Rey_commision_bodybuilding\\generate_card_invitation\\font\\iran_sans.ttf");
 
             // Font settings
             Font font = customFont.deriveFont(Font.BOLD, 24);
@@ -34,13 +34,13 @@ public class Main {
             // Generate a card for each name
             for (String name : names) {
                 // Load the invitation card image
-                BufferedImage image = ImageIO.read(new File("F:\\testgeneratePdf\\invitation_1402_10_15.jpg"));
+                BufferedImage image = ImageIO.read(new File("G:\\Rey_commision_bodybuilding\\generate_card_invitation\\14030929\\invitation140929.jpg"));
 
                 // Draw the name on the image
                 drawName(image, name, font, textColor, 595, 373);
 
                 // Save the modified image with the name as part of the file name
-                String outputFileName = "F:\\testgeneratePdf\\invitation_Guests_for_1402-10-15\\" + name + ".jpg";
+                String outputFileName = "G:\\Rey_commision_bodybuilding\\generate_card_invitation\\14030929\\invitation_Guests_for_1403_09_29\\" + name + ".jpg";
                 ImageIO.write(image, "jpg", new File(outputFileName));
             }
 
@@ -50,21 +50,27 @@ public class Main {
     }
     private static void drawName(BufferedImage image, String name, Font font, Color color, int desiredStartX, int startY) {
         Graphics2D g2d = image.createGraphics();
+
+        // Anti-Aliasing فعال
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
         g2d.setColor(color);
         g2d.setFont(font);
 
-        // Get the width of the text
+        // محاسبه عرض متن
         FontMetrics metrics = g2d.getFontMetrics();
         int textWidth = metrics.stringWidth(name);
 
-        // Calculate the adjusted starting position to ensure left alignment
+        // موقعیت مناسب برای قرارگیری متن
         int adjustedStartX = Math.max(0, desiredStartX - textWidth);
 
-        // Draw the text at the adjusted starting position
+        // رسم متن
         g2d.drawString(name, adjustedStartX, startY);
 
         g2d.dispose();
     }
+
     private static Font loadCustomFont(String fontPath) throws IOException, FontFormatException {
         return Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
     }
